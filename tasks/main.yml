@@ -1,7 +1,23 @@
 ---
 # tasks file for k8s
+- name: download executable file
+  import_tasks: downloadExecutableFile.yml
+
 - name: Stopped systemd service before install k3s 
   import_tasks: beforeInstall.yml
   when: ansible_os_family == 'RedHat'
+
+- name: Create files
+  import_tasks: files.yml
+
+- name: Create configs
+  import_tasks: config.yml
+
+- name: Enable and start k3s service
+  systemd:
+    name: "{{ k3s_service }}" 
+    enabled: yes
+    state: started
+    daemon_reload: yes
 
 

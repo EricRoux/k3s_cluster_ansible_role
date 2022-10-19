@@ -1,0 +1,9 @@
+---
+- name: "Create files"
+  copy:
+    src: "{{ item }}.sh"
+    dest: "{{ k3s_files[item]['path'] }}"
+    owner: "{{ k3s_files[item]['owner'] }}"
+    group: "{{ k3s_files[item]['group'] }}"
+    mode:  "{{ k3s_files[item]['mode'] }}"
+  loop: "{{ k3s_files | flatten(levels=1) }}"

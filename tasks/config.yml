@@ -1,0 +1,10 @@
+---
+- name: "Create system configs"
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ k3s_system_config_files[item]['path'] }}"
+    owner: "{{ k3s_system_config_files[item]['owner'] }}"
+    group: "{{ k3s_system_config_files[item]['group'] }}"
+    mode:  "{{ k3s_system_config_files[item]['mode'] }}"
+  loop: "{{ k3s_system_config_files | flatten(levels=1) }}"
+  notify: Restart k3s

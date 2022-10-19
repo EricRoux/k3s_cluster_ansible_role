@@ -1,2 +1,42 @@
 ---
 # defaults file for k8s
+k3s_name: k3s
+k3s_version: v1.24.6+k3s1
+k3s_bin_dir: /usr/local/bin
+k3s_systemd_dir: /usr/lib/systemd/system
+k3s_service: "{{ k3s_name }}.service"
+k3s_service_type: notify
+k3s_token: mytoken
+
+k3s_master_nodes: []
+k3s_agent_nodes: []
+
+k3s_exec_file:
+  download_url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
+  dest_path: /tmp/k3s/k3s
+  # username:
+  # password:
+
+k3s_files:
+  k3s-killall:
+    path: "{{ k3s_bin_dir }}/k3s-killall.sh"
+    group: root
+    owner: root
+    mode: "0755"
+
+k3s_system_config_files:
+  k3s-uninstall:
+    path: "{{ k3s_bin_dir }}/k3s-uninstall.sh"
+    group: root
+    owner: root
+    mode: "0755"
+  conf:
+    path: "{{ k3s_systemd_dir }}/{{ k3s_service }}.env"
+    group: root
+    owner: root
+    mode: "0644"
+  systemd:
+    path: "{{ k3s_systemd_dir }}/{{ k3s_service }}"
+    group: root
+    owner: root
+    mode: "0755"

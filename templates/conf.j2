@@ -1,0 +1,6 @@
+K3S_TOKEN={{ k3s_token }}
+K3S_NODE_NAME={{ inventory_hostname }}
+K3S_DATASTORE_ENDPOINT={% for host in groups['etcd'] %}{{ hostvars[host]['ansible_facts']['hostname'] }}=http://{{ hostvars[host]['ansible_facts']['hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %}
+{% if inventory_hostname in k3s_agent_nodes %}
+K3S_URL={% for host in k3s_master_nodes %}http://{{ host }}:6443{% if not loop.last %},{% endif %}{% endfor %}
+{% endif %}
