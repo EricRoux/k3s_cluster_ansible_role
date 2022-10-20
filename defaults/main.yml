@@ -11,6 +11,10 @@ k3s_token: mytoken
 k3s_master_nodes: []
 k3s_agent_nodes: []
 
+# External ETCD cluster
+k3s_external_db:
+  enabled: true
+
 k3s_exec_file:
   download_url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
   dest_path: /tmp/k3s/k3s
