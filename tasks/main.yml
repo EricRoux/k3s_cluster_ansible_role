@@ -1,5 +1,10 @@
 ---
 # tasks file for k8s
+- name: Select k3s_cluster_init server
+  set_fact:
+    k3s_cluster_init_server: '{{ groups["k3s_cluster_init"] | first }}'
+  run_once: true
+  
 - name: download executable file
   import_tasks: downloadExecutableFile.yml
 
