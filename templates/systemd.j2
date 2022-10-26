@@ -26,5 +26,5 @@ RestartSec=5s
 ExecStartPre=/bin/sh -xc '! /usr/bin/systemctl is-enabled --quiet nm-cloud-setup.service'
 ExecStartPre=-/sbin/modprobe br_netfilter
 ExecStartPre=-/sbin/modprobe overlay
-ExecStart={{ k3s_bin_dir }}/k3s \\
+ExecStart={{ k3s_bin_dir }}/k3s \
     {% if inventory_hostname in groups["k3s_master"] -%} server {%- else -%} agent {%- endif -%}

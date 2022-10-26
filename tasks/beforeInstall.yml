@@ -6,8 +6,8 @@
 
 - name: Disable service and timer nm-cloud-setup on RedHat, if enabled
   ansible.builtin.systemd:
-    name: {{ item }}
+    name: "{{ item }}"
     enabled: no
-    loop:
-      - nm-cloud-setup.service
-      - nm-cloud-setup.timer
+  loop:
+    - nm-cloud-setup.service
+    - nm-cloud-setup.timer

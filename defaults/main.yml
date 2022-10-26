@@ -16,7 +16,7 @@ k3s_external_db:
 
 k3s_exec_file:
   download_url: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}/k3s
-  dest_path: /tmp/k3s/k3s
+  dest_path: /tmp/k3s
   # username:
   # password:
 
@@ -42,4 +42,4 @@ k3s_system_config_files:
     path: "{{ k3s_systemd_dir }}/{{ k3s_service }}"
     group: root
     owner: root
-    mode: "0755"
+    mode: "0644"

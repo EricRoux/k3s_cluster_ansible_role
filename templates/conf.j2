@@ -3,7 +3,7 @@ K3S_NODE_NAME={{ inventory_hostname }}
 {% if inventory_hostname == k3s_cluster_init_server %}
 K3S_CLUSTER_INIT=true
 {% else %}
-K3S_URL=http://{{ k3s_cluster_init_server }}:6443
+K3S_URL=https://{{ k3s_cluster_init_server }}:6443
 {% endif %}
 {% if k3s_external_db.enabled %}
 K3S_DATASTORE_ENDPOINT={% for host in groups['etcd'] %}{{ hostvars[host]['ansible_facts']['hostname'] }}=http://{{ hostvars[host]['ansible_facts']['hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %}

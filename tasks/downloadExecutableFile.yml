@@ -1,24 +1,25 @@
 ---
 - name: Download k3s to {{ k3s_exec_file.dest_path }}
   ansible.builtin.get_url:
-    url: {{ k3s_exec_file.download_url }}
-    dest: {{ k3s_exec_file.dest_path }}
+    url: "{{ k3s_exec_file.download_url }}"
+    dest: "{{ k3s_exec_file.dest_path }}"
     mode: "0600"
-    url_username: {{ k3s_exec_file.username | default(omit) }}
-    url_password: {{ k3s_exec_file.password | default(omit) }}
+    url_username: "{{ k3s_exec_file.username | default(omit) }}"
+    url_password: "{{ k3s_exec_file.password | default(omit) }}"
 
 - name: Copy k3s to {{ k3s_bin_dir }}
   ansible.builtin.copy:
-    src: {{ k3s_exec_file.dest_path }}
-    dest: {{ item }}
+    src: "{{ k3s_exec_file.dest_path }}"
+    dest: "{{ item }}"
+    remote_src: yes
     group: root
     owner: root
     mode: "0755"
-    loop: 
-      - "{{ k3s_bin_dir }}/k3s"
-      - "{{ k3s_bin_dir }}/kubectl"
-      - "{{ k3s_bin_dir }}/crictl"
-      - "{{ k3s_bin_dir }}/ctr"
+  loop: 
+    - "{{ k3s_bin_dir }}/k3s"
+    - "{{ k3s_bin_dir }}/kubectl"
+    - "{{ k3s_bin_dir }}/crictl"
+    - "{{ k3s_bin_dir }}/ctr"
 
 - name: Remove tmp k3s file
   ansible.builtin.file:
