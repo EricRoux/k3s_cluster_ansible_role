@@ -1,0 +1,9 @@
+---
+- name: "Create directories"
+  file:
+    path: "{{ k3s_dir[item]['path'] }}"
+    owner: "{{ k3s_dir[item]['owner'] }}"
+    group: "{{ k3s_dir[item]['group'] }}"
+    mode: "{{ k3s_dir[item]['mode'] }}"
+    state: directory
+  loop: '{{ k3s_dir | flatten(levels=1) }}'

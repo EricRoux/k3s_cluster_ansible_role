@@ -1,15 +1,23 @@
 ---
 - name: Download k3s to {{ k3s_exec_file.dest_path }}
   ansible.builtin.get_url:
-    url: "{{ k3s_exec_file.download_url }}"
-    dest: "{{ k3s_exec_file.dest_path }}"
+    url: "{{ k3s_exec_file.download_url }}/k3s"
+    dest: "{{ k3s_exec_file.dest_path }}/k3s"
+    mode: "0600"
+    url_username: "{{ k3s_exec_file.username | default(omit) }}"
+    url_password: "{{ k3s_exec_file.password | default(omit) }}"
+
+- name: Download k3s images to {{ k3s_exec_file.dest_path }}
+  ansible.builtin.get_url:
+    url: "{{ k3s_exec_file.download_url }}/k3s-airgap-images-amd64.tar"
+    dest: "{{ k3s_exec_file.dest_path }}/k3s-airgap-images-amd64.tar"
     mode: "0600"
     url_username: "{{ k3s_exec_file.username | default(omit) }}"
     url_password: "{{ k3s_exec_file.password | default(omit) }}"
 
 - name: Copy k3s to {{ k3s_bin_dir }}
   ansible.builtin.copy:
-    src: "{{ k3s_exec_file.dest_path }}"
+    src: "{{ k3s_exec_file.dest_path }}/k3s"
     dest: "{{ item }}"
     remote_src: yes
     group: root
@@ -21,7 +29,19 @@
     - "{{ k3s_bin_dir }}/crictl"
     - "{{ k3s_bin_dir }}/ctr"
 
-- name: Remove tmp k3s file
+- name: Copy k3s images to {{ k3s_dir.images.path }}
+  ansible.builtin.copy:
+    src: "{{ k3s_exec_file.dest_path }}/k3s-airgap-images-amd64.tar"
+    dest: "{{ k3s_dir.images.path }}/"
+    remote_src: yes
+    group: root
+    owner: root
+    mode: "0644"
+
+- name: Remove tmp k3s files
   ansible.builtin.file:
-    path: {{ k3s_exec_file.dest_path }}
+    path: "{{ k3s_exec_file.dest_path }}/{{ item }}"
     state: absent
+  loop:
+    - "k3s"
+    - "k3s-airgap-images-amd64.tar"
