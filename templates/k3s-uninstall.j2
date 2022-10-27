@@ -1,6 +1,6 @@
 #!/bin/sh
 set -x
-[ \$(id -u) -eq 0 ] || exec sudo \$0 \$@
+[ $(id -u) -eq 0 ] || exec sudo $0 $@
 
 {{ k3s_bin_dir }}/k3s-killall.sh
 
@@ -27,8 +27,8 @@ if (ls {{ k3s_systemd_dir }}/k3s*.service || ls /etc/init.d/k3s*) >/dev/null 2>&
 fi
 
 for cmd in kubectl crictl ctr; do
-    if [ -L {{ k3s_bin_dir }}/\$cmd ]; then
-        rm -f {{ k3s_bin_dir }}/\$cmd
+    if [ -L {{ k3s_bin_dir }}/$cmd ]; then
+        rm -f {{ k3s_bin_dir }}/$cmd
     fi
 done
 
@@ -45,9 +45,9 @@ if type yum >/dev/null 2>&1; then
     rm -f /etc/yum.repos.d/rancher-k3s-common*.repo
 elif type zypper >/dev/null 2>&1; then
     uninstall_cmd="zypper remove -y k3s-selinux"
-    if [ "\${TRANSACTIONAL_UPDATE=false}" != "true" ] && [ -x /usr/sbin/transactional-update ]; then
-        uninstall_cmd="transactional-update --no-selfupdate -d run \$uninstall_cmd"
+    if [ "${TRANSACTIONAL_UPDATE=false}" != "true" ] && [ -x /usr/sbin/transactional-update ]; then
+        uninstall_cmd="transactional-update --no-selfupdate -d run $uninstall_cmd"
     fi
-    \$uninstall_cmd
+    $uninstall_cmd
     rm -f /etc/zypp/repos.d/rancher-k3s-common*.repo
 fi
