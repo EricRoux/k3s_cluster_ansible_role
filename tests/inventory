@@ -1,2 +1,6 @@
-localhost
+[k3s_cluster_init]
+localhost ansible_host=127.0.0.1
+
+[k3s_master]
+localhost ansible_host=127.0.0.1
 
