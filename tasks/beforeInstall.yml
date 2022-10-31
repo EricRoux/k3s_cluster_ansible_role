@@ -4,10 +4,10 @@
     name: firewalld
     state: stopped
 
-- name: Disable service and timer nm-cloud-setup on RedHat, if enabled
-  ansible.builtin.systemd:
-    name: "{{ item }}"
-    enabled: no
-  loop:
-    - nm-cloud-setup.service
-    - nm-cloud-setup.timer
+# - name: Disable service and timer nm-cloud-setup on RedHat, if enabled
+#   ansible.builtin.systemd:
+#     name: "{{ item }}"
+#     enabled: no
+#   loop:
+#     - nm-cloud-setup.service
+#     - nm-cloud-setup.timer

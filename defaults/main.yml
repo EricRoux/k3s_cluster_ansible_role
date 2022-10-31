@@ -1,5 +1,5 @@
 ---
-# defaults file for k8s
+# defaults file for k3s
 k3s_name: k3s
 k3s_version: v1.24.6+k3s1
 k3s_bin_dir: /usr/local/bin
@@ -10,18 +10,13 @@ k3s_token: mytoken
 k3s_cluster_init_server: ""
 
 # External ETCD cluster
-k3s_external_db:
-  enabled: true
+k3s_external_etcd:
+  enabled: false
 
-k3s_registry: https://github.com/k3s-io/k3s/releases/download
+k3s_registry: https://github.com/k3s-io/k3s/releases/download/{{ k3s_version }}
 # k3s_registry_username: login
 # k3s_registry_password: password
-
-k3s_exec_file:
-  download_url: "{{ k3s_registry }}/{{ k3s_version }}"
-  dest_path: /tmp
-  # username: "{{ k3s_registry_username }}"
-  # password: "{{ k3s_registry_password }}"
+k3s_offline_mode: false
 
 k3s_files:
   k3s-killall:
@@ -33,6 +28,11 @@ k3s_files:
 k3s_dir:
   images:
     path: "/var/lib/rancher/k3s/agent/images"
+    owner: root
+    group: root
+    mode: "0755"
+  tmp:
+    path: "/tmp/k3s"
     owner: root
     group: root
     mode: "0755"

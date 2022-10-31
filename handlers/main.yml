@@ -1,5 +1,5 @@
 ---
-# handlers file for k8s
+# handlers file for k3s
 - name: Restart k3s
   systemd:
     name: "{{ k3s_service }}"

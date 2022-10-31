@@ -1,6 +1,6 @@
 ---
-# tasks file for k8s
-- name: Select k3s_cluster_init server
+# tasks file for k3k8ss
+- name: Select k3s_cluster_init_server server
   set_fact:
     k3s_cluster_init_server: '{{ groups["k3s_cluster_init"] | first }}'
   run_once: true
