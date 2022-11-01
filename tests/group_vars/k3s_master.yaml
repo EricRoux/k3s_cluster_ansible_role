@@ -1,1 +1,2 @@
-k3s_offline_mode: true
+k3s_offline_mode_no_registry:
+  enabled: true

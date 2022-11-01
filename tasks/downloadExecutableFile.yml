@@ -6,6 +6,14 @@
     mode: "0600"
     url_username: "{{ k3s_registry_username | default(omit) }}"
     url_password: "{{ k3s_registry_password | default(omit) }}"
+  when: not k3s_offline_mode_no_registry.enabled
+
+- name: Copy local k3s to {{ k3s_dir.tmp.path }}/
+  copy:
+    src: "{{ k3s_offline_mode_no_registry.local_dir }}/k3s"
+    dest: "{{ k3s_dir.tmp.path }}/k3s"
+    mode: "0600"
+  when: k3s_offline_mode_no_registry.enabled
 
 - name: Download k3s images to {{ k3s_dir.tmp.path }}/
   ansible.builtin.get_url:
@@ -14,7 +22,16 @@
     mode: "0600"
     url_username: "{{ k3s_registry_username | default(omit) }}"
     url_password: "{{ k3s_registry_password | default(omit) }}"
-  when: k3s_offline_mode
+  when: 
+    - not k3s_offline_mode_no_registry.enabled 
+      and k3s_offline_mode.enabled
+
+- name: Copy local k3s images to {{ k3s_dir.tmp.path }}/
+  copy:
+    src: "{{ k3s_offline_mode_no_registry.local_dir }}/k3s-airgap-images-amd64.tar"
+    dest: "{{ k3s_dir.tmp.path }}/k3s-airgap-images-amd64.tar"
+    mode: "0600"
+  when: k3s_offline_mode_no_registry.enabled
 
 - name: Copy k3s to {{ k3s_bin_dir }}
   ansible.builtin.copy:
@@ -38,7 +55,9 @@
     group: root
     owner: root
     mode: "0644"
-  when: k3s_offline_mode
+  when: 
+    - k3s_offline_mode_no_registry.enabled
+      or k3s_offline_mode.enabled 
 
 - name: Remove tmp k3s files
   ansible.builtin.file:
